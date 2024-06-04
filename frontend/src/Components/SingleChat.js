@@ -7,6 +7,7 @@ import ProfileModal from "./Miscellaneous/ProfileModal";
 import UpdateGroupChatModal from "./Miscellaneous/UpdateGroupChatModal";
 import axios from "axios";
 import "./style.css";
+import ScrollableChat from "./ScrollableChat";
 
 const SingleChat = ({fetchAgain, setFetchAgain}) => {
     const { selectedChat, setSelectedChat, user } = ChatState();
@@ -15,8 +16,6 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
     const [newMessage, setNewMessage] = useState("");
-    const [typing, setTyping] = useState(false);
-    const [istyping, setIsTyping] = useState(false);
     
     const fetchMessages = async () => {
         if (!selectedChat) return;
@@ -51,6 +50,12 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
         fetchMessages();
     }, [selectedChat]);
 
+    const sendMessage = () => {
+    };
+
+    const typingHandler = () => {
+    };
+    
     return (
         <>
             {selectedChat ? (
@@ -113,9 +118,25 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
                             />
                         ) : (
                             <div className="messages">
-                                {messages}
+                                <ScrollableChat messages={messages}/>
                             </div>
                         )}
+
+                        <FormControl
+                            onKeyDown={sendMessage}
+                            id="first-name"
+                            isRequired
+                            mt={3}
+                        >
+                            
+                            <Input
+                                variant="filled"
+                                bg="#E0E0E0"
+                                placeholder="Enter a message.."
+                                value={newMessage}
+                                onChange={typingHandler}
+                            />
+                        </FormControl>
                     </Box>
                 </>
             ) : (
