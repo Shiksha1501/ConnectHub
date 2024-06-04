@@ -50,10 +50,40 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
         fetchMessages();
     }, [selectedChat]);
 
-    const sendMessage = () => {
+    const sendMessage = async(event) => {
+        if (event.key === "Enter" && newMessage) {
+            try {
+                const config = {
+                    headers: {
+                        "Content-type": "application/json",
+                        Authorization: `Bearer ${user.token}`,
+                    },
+                };
+                setNewMessage("");
+                const { data } = await axios.post(
+                    "/api/message",
+                    {
+                        content: newMessage,
+                        chatId: selectedChat._id,
+                    },
+                    config
+                );
+                setMessages([...messages, data]);
+            } catch (error) {
+                toast({
+                    title: "Error Occured!",
+                    description: "Failed to send the Message",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                    position: "bottom",
+                });
+            }
+        }
     };
 
-    const typingHandler = () => {
+    const typingHandler = (e) => {
+        setNewMessage(e.target.value);
     };
     
     return (
