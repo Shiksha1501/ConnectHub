@@ -19,6 +19,9 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/user", userRoutes);
+app.use("/api/chat", chatRoutes);
+app.use("/api/message", messageRoutes);
+
 app.use(notFound);
 app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
@@ -36,6 +39,7 @@ io.on("connection", (socket) => {
 
   socket.on("setup", (userData) => {
     socket.join(userData._id);
+
     socket.emit("connected");
   });
 
